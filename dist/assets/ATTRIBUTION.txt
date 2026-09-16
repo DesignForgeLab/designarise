@@ -1,0 +1,7 @@
+Concept-image source endpoints (Unsplash):
+https://images.unsplash.com/photo-1600210492486-724fe5c67fb0
+https://images.unsplash.com/photo-1441974231531-c6227db76b6e
+
+These images illustrate self-initiated designs, not client work.
+
+DM Sans and Manrope are distributed under the SIL Open Font License. See the included license files.

@@ -1,0 +1,19 @@
+{
+  "name": "forma-studio",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "build": "node build.mjs",
+    "test": "node --test tests/server.test.mjs",
+    "check": "node --check app.js && node --check server.mjs && node --check build.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "three": "^0.186.0"
+  }
+}
