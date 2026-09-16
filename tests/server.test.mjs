@@ -24,3 +24,24 @@ test('public website, fonts and images are served; project internals stay privat
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
 });
 
+test('globalThis.matchMedia fallback is defined and functional in server environment', () => {
+  assert.equal(typeof globalThis.matchMedia, 'function');
+  const mql = globalThis.matchMedia('(prefers-reduced-motion: reduce)');
+  assert.equal(typeof mql, 'object');
+  assert.equal(mql.matches, false);
+  assert.equal(mql.media, '(prefers-reduced-motion: reduce)');
+  assert.equal(typeof mql.addEventListener, 'function');
+  assert.equal(typeof mql.removeEventListener, 'function');
+  assert.doesNotThrow(() => mql.addEventListener('change', () => {}));
+});
+
+test('client scripts evaluate cleanly in Node.js runtime without SSR/cold-start crash', async () => {
+  // Simulates cold-start evaluation of client scripts in serverless Node.js container
+  await assert.doesNotReject(async () => {
+    await import('../app.js');
+  });
+  await assert.doesNotReject(async () => {
+    await import('../dist/app.js');
+  });
+});
+

@@ -1,6 +1,19 @@
 import { mkdir, copyFile, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { homeRest, footer, pages } from './content.mjs';
+
+if (typeof globalThis.matchMedia === 'undefined') {
+  globalThis.matchMedia = (query) => ({
+    matches: false,
+    media: query || '',
+    onchange: null,
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  });
+}
 const root=process.cwd();
 const dist=path.join(root,'dist');
 await mkdir(path.join(dist,'assets'),{recursive:true});

@@ -1,9 +1,13 @@
 // Adaptive WebGL layer; synchronized with the film through the hero timeline.
 import * as THREE from '/assets/three.module.js';
+if(typeof window!=='undefined'&&typeof document!=='undefined'){
 const hero=document.querySelector('.hero');
-if(hero&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+const hasMatchMedia=typeof window.matchMedia==='function';
+const prefersReduced=hasMatchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(hero&&!prefersReduced){
 try{
-const low=matchMedia('(max-width:800px)').matches||navigator.hardwareConcurrency<=4;
+const isSmallScreen=hasMatchMedia&&window.matchMedia('(max-width:800px)').matches;
+const low=isSmallScreen||(typeof navigator!=='undefined'&&navigator.hardwareConcurrency<=4);
 const renderer=new THREE.WebGLRenderer({alpha:true,antialias:!low,powerPreference:'low-power'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,low?1:1.5));renderer.setSize(hero.clientWidth,hero.clientHeight);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
 renderer.domElement.setAttribute('aria-hidden','true');hero.insertBefore(renderer.domElement,hero.querySelector('.hero-label'));
@@ -24,5 +28,6 @@ document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(frame);ac
 addEventListener('motion-change',e=>{active=!e.detail;renderer.domElement.hidden=e.detail;cancelAnimationFrame(frame);if(active)frame=requestAnimationFrame(render);});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();active=false;cancelAnimationFrame(frame);renderer.domElement.hidden=true;});
 }catch{ /* Film and type remain the complete fallback when WebGL is unavailable. */ }
+}
 }
 
